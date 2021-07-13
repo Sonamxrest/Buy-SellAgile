@@ -34,5 +34,14 @@ describe("UserTesting", () => {
         let status = await User.findOne({"Username":"nima","Password":"123456"})  
         expect(status.Username).toBe("nima")
    })
+
+   it('Update', async () => {
+    const reg = {
+        'Username': 'nima1'
+    };
+    const status = await User.updateOne({ _id: Object('60e7f56a2436f346c8de89d6') },
+        { $set: reg });
+    expect(status.ok).toBe(1);
+});
    
 })
