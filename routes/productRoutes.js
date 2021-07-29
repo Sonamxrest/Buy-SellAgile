@@ -9,7 +9,7 @@ const {check,validationResult} = require('express-validator')
 
 
 route.post('/post',verifyUser,(req,res)=>{
-    console.log(req.body)
+ console.log(req.body)
 const error = validationResult(req)
 if(error.isEmpty()){
     const name = req.body.Name
@@ -33,11 +33,10 @@ if(error.isEmpty()){
  
     })
     product.save().then((data)=>{
-     
-       return res.status(200).json({success:true,message:product._id})
+        console.log(data)
+       return res.status(200).json({success:true,message:data._id})
  
     }).catch((error)=>{
- 
         console.log(error)
  return res.status(200).json({success:false,message:error})
  
@@ -90,6 +89,7 @@ route.put('/update/product/:id',(req,res)=>{
 //})
 
  route.put('/post/upload/:id',upload.fields([{name:'image'}]),(req,res)=>{
+     console.log("aayo")
  let newData =[]
  console.log(req.files)
  req.files.image.forEach(data => {
