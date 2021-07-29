@@ -77,17 +77,17 @@ else{
 })
 
 route.put('/update/profile/:id',upload.single('profile'),(req,res)=>{
-
 console.log(req.file)
 User.findByIdAndUpdate({_id:req.params.id},{
     Profile:req.file.filename
 }).then((data)=>{
-    res.status(200).json({success:true,data:data})
+    res.status(200).json({success:true,message:req.file.filename})
 })
 
 })
 
 route.put('/update/user',verifyUser,(req,res)=>{
+    console.log("Update")
     const name = req.body.Name
     const username = req.body.Username
     const phone = req.body.PhoneNumber
