@@ -10,7 +10,7 @@ try{
     const data = jwt.verify(rawToken,"SecretKey")
     User.findById({_id:data.id}).then((r)=>{
         req.user =r
-        console.log(r)
+        
         next()
     })
 }

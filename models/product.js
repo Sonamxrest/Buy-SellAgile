@@ -52,13 +52,7 @@ Images:[{
 }],
 Likes:[
     {
-
-        user:{
-            type:String,
-            
-        },
-        
-
+            type:String
     }
 ],
 

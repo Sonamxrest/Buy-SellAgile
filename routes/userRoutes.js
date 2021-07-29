@@ -30,6 +30,16 @@ console.log(user)
 })
 })
 
+
+
+// .populate({
+
+
+//     path:"Likes.product",
+//     populate:{
+//     path:"User"
+//     }
+//     })
 route.post('/login',(req,res)=>{
 const username = req.body['Username']
 const password = req.body['Password']
@@ -92,10 +102,17 @@ User.findByIdAndUpdate({_id:req.user._id},{
 })
 
 
-
+//.populate({
+//
+//
+//                                             path:"Likes.product",
+//                                             populate:{
+//                                             path:"User"
+//                                             }
+//                                             })
 
 route.get('/user/:number',(req,res)=>{
-User.findOne({PhoneNumber:req.params.number}).then((data)=>{
+User.findOne({PhoneNumber:req.params.number}).populate('Friends.user').then((data)=>{
 if(data)
 {
 res.status(200).json({success:true,user:data,token:""})

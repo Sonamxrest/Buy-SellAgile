@@ -43,6 +43,17 @@ Questions:[{
         type:String
     }
 }]
+,
+Likes:[{
+product:{
+type:mongoose.Schema.Types.ObjectId,
+ref:"Product"
+
+}
+
+
+}]
+
 })
 
 
