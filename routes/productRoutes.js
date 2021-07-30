@@ -19,6 +19,7 @@ if(error.isEmpty()){
     const user = req.user._id
  const usedFor = parseInt(req.body.UsedFor)
  const negotiable = req.body.Negotiable
+ const feature = req.body.Features
  const product = new Product({
  
  Name:name,
@@ -29,8 +30,9 @@ if(error.isEmpty()){
  SubCategory:req.body.SubCategory,
  UsedFor:usedFor,
  Condition:req.body.Condition,
- Negotiable:negotiable
- 
+ Negotiable:negotiable,
+ Features:feature
+
     })
     product.save().then((data)=>{
         console.log(data)

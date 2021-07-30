@@ -88,6 +88,7 @@ User.findByIdAndUpdate({_id:req.params.id},{
 
 route.put('/update/user',verifyUser,(req,res)=>{
     console.log("Update")
+    console.log(req.body)
     const name = req.body.Name
     const username = req.body.Username
     const phone = req.body.PhoneNumber
