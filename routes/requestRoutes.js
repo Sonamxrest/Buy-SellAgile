@@ -7,8 +7,9 @@ const User = require('../models/user')
 
 
 route.post('/sendRequest/:id',verifyUser,(req,res)=>{
+    console.log("Hello")
 const data =new Request({From:req.user._id,To:req.params.id})
-data.save().then((data)=>{res.status(200).json({success:true,message:"Request Sent"})})
+data.save().then((data)=>{res.status(200).json({success:true,data:data})})
 })
 
 route.put('/acceptRequest',verifyUser,(req,res)=>{

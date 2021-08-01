@@ -19,51 +19,29 @@ app.use(message)
 app.use(request)
 
 app.use('/uploads',require('express').static(__dirname +"/uploads"))
-
-
 let client=0
 var newM={}
+const { Server } = require("socket.io");
+const io = new Server(http);
 
-
-// const { Server } = require("socket.io");
-// const io = new Server(http);
-
-// io.on('connection', (socket) => {
-//   console.log('a user connected');
-// });
-
-  wss.on('connection', function connection(ws) {
+io.on('connection', (socket) => {
 client++
 console.log(client)
+  console.log('a user connected');
 
-    ws.on('message', function incoming(message) {
-       newM = JSON.parse(message)
-       console.log(newM)
-//      wss.broadcast( JSON.stringify({id:newM.id,message:newM.message,user:newM.user,format:newM.format}))
-      wss.broadcast( JSON.stringify({message:newM.message}))
+socket.on('message',(data)=>{
+  io.emit('message',data)
+})
+socket.on('request',(data)=>{
+  console.log(data)
+})
+});
 
-newM={}
+io.on('disconnect',(data)=>{
+  client--
+console.log(client)
+})
 
-
-       });
-
-       ws.on('close',(daat)=>{
-        client--
-        console.log(client)
-         console.log("disconnected")
-       })
-
-
-
-  })
-
-
-  wss.broadcast = function broadcast(msg) {
-  wss.clients.forEach(function each(client) {
-        client.send(msg);
-
-     });
- };
 
 
 

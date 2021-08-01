@@ -44,13 +44,12 @@ route.post('/login',(req,res)=>{
 const username = req.body['Username']
 const password = req.body['Password']
 console.log(req.body)
-User.findOne({Username:username}).populate('Friends.user').then((data)=>{
+User.findOne({Username:username}).populate('Friends.user').populate({path:"Likes.product",populate:{path:"User"}}).populate({path:"Likes.product",populate:{path:"Comments.user"}}).then((data)=>{
 if(!data){
-
 res.status(200).json({success:false,message:'no user found'})
 }
 else{   
-console.log(data)
+console.log(data.Likes[0].product)
    
 bcrypt.compare(password,data.Password).then((result)=>{
 if(result===false){
@@ -106,7 +105,7 @@ User.findByIdAndUpdate({_id:req.user._id},{
 //.populate({
 //
 //
-//                                             path:"Likes.product",
+// //                                             path:"Likes.product",
 //                                             populate:{
 //                                             path:"User"
 //                                             }
@@ -165,15 +164,19 @@ Password:hash
         res.status(200).json({success:true,message:"Password Updated"})
     })
 })
-
-
-
-
-    }).catch((err)=>{
+}).catch((err)=>{
 
     })
 })
 
+
+route.get("/wishList",verifyUser,(req,res)=>{
+User.findById({_id:req.user._id}).populate('Friends.user').populate({path:"Likes.product",populate:{path:"User"}}).populate({path:"Likes.product",populate:{path:"Comments.user"}}).then((data)=>{
+    console.log(data.Likes[0].product)
+    return res.status(200).json({success:true,user:data,token:""})
+})
+
+})
 
 
 module.exports = route
