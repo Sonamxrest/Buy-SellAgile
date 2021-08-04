@@ -32,6 +32,7 @@ console.log(client)
 socket.on('message',(data)=>{
   io.emit('message',data)
 })
+//notify on request send
 socket.on('request',(data)=>{
   console.log(data)
 })
