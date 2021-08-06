@@ -20,10 +20,12 @@ app.use(request)
 
 app.use('/uploads',require('express').static(__dirname +"/uploads"))
 let client=0
+let client2=0
 var newM={}
 const { Server } = require("socket.io");
 const io = new Server(http);
 
+  
 io.on('connection', (socket) => {
 client++
 console.log(client)
@@ -31,6 +33,12 @@ console.log(client)
 
 socket.on('message',(data)=>{
   io.emit('message',data)
+})
+socket.on('recieved',(data)=>{
+  io.emit('recieved',data)
+})
+socket.on('calling',(data)=>{
+  io.emit('calling',data)
 })
 //notify on request send
 socket.on('request',(data)=>{
