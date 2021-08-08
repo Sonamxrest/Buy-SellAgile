@@ -46,10 +46,10 @@ const password = req.body['Password']
 console.log(req.body)
 User.findOne({Username:username}).populate('Friends.user').populate({path:"Likes.product",populate:{path:"User"}}).populate({path:"Likes.product",populate:{path:"Comments.user"}}).then((data)=>{
 if(!data){
+    console.log('no user found')
 res.status(200).json({success:false,message:'no user found'})
 }
 else{   
-console.log(data.Likes[0].product)
    
 bcrypt.compare(password,data.Password).then((result)=>{
 if(result===false){
@@ -72,6 +72,7 @@ else{
 })
 }
 }).catch((err)=>{
+    console.log(err)
 })
 })
 
@@ -112,7 +113,8 @@ User.findByIdAndUpdate({_id:req.user._id},{
 //                                             })
 
 route.get('/user/:number',(req,res)=>{
-User.findOne({PhoneNumber:req.params.number}).populate('Friends.user').then((data)=>{
+User.findOne({PhoneNumber:req.params.number}).populate('Friends.user').populate({path:"Likes.product",populate:{path:"User"}}).populate({path:"Likes.product",populate:{path:"Comments.user"}}).then((data)=>{
+    console.log(data)
 if(data)
 {
 res.status(200).json({success:true,user:data,token:""})
@@ -136,7 +138,7 @@ User.findOneAndUpdate({_id:req.user._id},{
 
 
 route.get('/showFriends',verifyUser,(req,res)=>{
-User.findOne({_id:req.user._id}).populate('Friends.user').then((data)=>{
+User.findOne({_id:req.user._id}).populate('Friends.user').populate({path:"Likes.product",populate:{path:"User"}}).populate({path:"Likes.product",populate:{path:"Comments.user"}}).then((data)=>{
 console.log(data)
 res.status(200).json({success:true,data:data})
 })

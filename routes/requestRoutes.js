@@ -14,6 +14,7 @@ data.save().then((data)=>{res.status(200).json({success:true,data:data})})
 
 route.put('/acceptRequest',verifyUser,(req,res)=>{
 // ma aaile to ho
+console.log("Rec")
 const id = req.body._id
 const sender = req.body.From._id
 const me = req.user._id
@@ -22,10 +23,8 @@ Request.findByIdAndDelete({_id:id}).then((Data)=>{
     
     User.findByIdAndUpdate({_id:sender},{
 
-
         $push:{Friends:{user:me}}
     }).then( (data)=>{User.findByIdAndUpdate({_id:me},{
-
 
         $push:{Friends:{user:sender}}
     }).then((data)=>{

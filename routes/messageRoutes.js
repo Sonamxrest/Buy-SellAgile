@@ -71,6 +71,7 @@ else
            return res.status(200).json({success:true,message:req.file.filename})
     
        }).catch((err)=>{
+           console.log(err)
            return res.status(200).json({success:false,message:err})
        })
 }
@@ -83,8 +84,6 @@ else
 route.get('/messages/:id',(req,res)=>{
 
 Message.findOne({_id:req.params.id}).populate('Sender').populate('Reciever').populate('Messages.user').then((data)=>{
-
-  
     return res.status(200).json({success:true,data:data})
 }).catch((err)=>{
     console.log(err)

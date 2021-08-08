@@ -9,7 +9,8 @@ const productRoute = require("./routes/productRoutes")
 var request = require('./routes/requestRoutes')
 var message = require('./routes/messageRoutes')
 const http = require('http').createServer(app)
- const wss = new WebSocket.Server({server:http})
+const wss = new WebSocket.Server({ server:http });
+
 app.use(bodyParser.urlencoded({extended:false}))
 app.use(require('express').json())
 
@@ -20,7 +21,7 @@ app.use(request)
 
 app.use('/uploads',require('express').static(__dirname +"/uploads"))
 let client=0
-let client2=0
+
 var newM={}
 const { Server } = require("socket.io");
 const io = new Server(http);
@@ -31,13 +32,11 @@ client++
 console.log(client)
   console.log('a user connected');
 
-socket.on('message',(data)=>{
-  io.emit('message',data)
-})
 socket.on('recieved',(data)=>{
   io.emit('recieved',data)
 })
 socket.on('calling',(data)=>{
+  console.log(data)
   io.emit('calling',data)
 })
 //notify on request send
@@ -51,6 +50,48 @@ io.on('disconnect',(data)=>{
 console.log(client)
 })
 
+
+
+
+//chat 
+var clients =0
+var newM={}
+wss.on('connection', function connection(ws) {
+
+clients++
+console.log(clients)
+
+  ws.on('message', function incoming(message) {
+     newM = JSON.parse(message)
+     console.log(newM) 
+    wss.broadcast( JSON.stringify({id:newM.id,message:newM.message,user:newM.user,format:newM.format}))
+newM={}
+   
+ 
+     });
+
+     ws.on('close',(daat)=>{
+      clients--
+      console.log(client)
+       console.log("disconnected")
+     })
+
+
+  
+})
+
+
+
+
+
+
+wss.broadcast = function broadcast(msg) {
+   
+  wss.clients.forEach(function each(client) {
+        client.send(msg);
+       
+     });
+ };
 
 
 
