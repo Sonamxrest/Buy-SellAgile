@@ -29,7 +29,7 @@ const io = new Server(http);
   
 io.on('connection', (socket) => {
 client++
-console.log(client)
+console.log('socket client', client)
   console.log('a user connected');
 
 socket.on('recieved',(data)=>{
@@ -62,10 +62,11 @@ clients++
 console.log(clients)
 
   ws.on('message', function incoming(message) {
-     newM = JSON.parse(message)
-     console.log(newM) 
-    wss.broadcast( JSON.stringify({id:newM.id,message:newM.message,user:newM.user,format:newM.format}))
-newM={}
+    console.log(message)
+//      newM = JSON.parse(message)
+//      console.log(newM) 
+    wss.broadcast(message)
+// newM={}
    
  
      });
