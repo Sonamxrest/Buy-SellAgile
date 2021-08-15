@@ -52,6 +52,25 @@ describe("Product Testing",()=>{
             expect(data.Name).toEqual("Jacket")
         })
     })
+    it("Delete Product",async()=>{
+        let products = await Product.find({})
+        let status = await Product.deleteOne({"_id":products[0]._id})
+        expect(status.ok).toBe(1)
+    })
+
+    it("Update Product",async()=>{
+        let products = await Product.find({})
+        let updateData = {
+            "Name":"Kattu"
+        }
+
+        let status = await Product.updateOne({"_id":products[0]._id},{
+            $set:updateData
+        })
+
+        expect(status.ok).toBe(1)
+
+    })
 
 
     
