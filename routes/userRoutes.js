@@ -180,5 +180,10 @@ User.findById({_id:req.user._id}).populate('Friends.user').populate({path:"Likes
 
 })
 
+route.get('/user/:id',(req,res)=>{
+    User.findById({_id:req.params.id}).populate('Friends.user').populate({path:"Likes.product",populate:{path:"User"}}).populate({path:"Likes.product",populate:{path:"Comments.user"}}).then((data)=>{
+        return res.status(200).json({success:true,user:data,token:""})
 
+    })
+})
 module.exports = route
