@@ -61,6 +61,7 @@ else{
         isOnline:true
      }).then((d)=>{
          const token = jwt.sign({id:data._id},'SecretKey')
+         console.log(token, data)
      res.status(200).json({success:true,token:token,user:data})
      })
 }
