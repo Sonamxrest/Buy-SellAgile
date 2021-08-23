@@ -26,33 +26,6 @@ var newM={}
 const { Server } = require("socket.io");
 const io = new Server(http);
 
-  
-io.on('connection', (socket) => {
-client++
-console.log('socket client', client)
-  console.log('a user connected');
-
-socket.on('recieved',(data)=>{
-  io.emit('recieved',data)
-})
-socket.on('calling',(data)=>{
-  console.log(data)
-  io.emit('calling',data)
-})
-//notify on request send
-socket.on('request',(data)=>{
-  console.log(data)
-})
-});
-
-io.on('disconnect',(data)=>{
-  client--
-console.log(client)
-})
-
-
-
-
 //chat 
 var clients =0
 var newM={}
