@@ -175,7 +175,6 @@ Password:hash
 
 route.get("/wishList",verifyUser,(req,res)=>{
 User.findById({_id:req.user._id}).populate('Friends.user').populate({path:"Likes.product",populate:{path:"User"}}).populate({path:"Likes.product",populate:{path:"Comments.user"}}).then((data)=>{
-    console.log(data.Likes[0].product)
     return res.status(200).json({success:true,user:data,token:""})
 })
 

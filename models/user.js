@@ -52,7 +52,19 @@ ref:"Product"
 }
 
 
-}]
+}],
+Rating:[{
+    user:{
+        type:mongoose.Schema.Types.ObjectId
+    },
+    rating:{
+        type:Number
+    }
+}],
+Cash:{
+    type:Number,
+    default:10000
+}
 
 })
 
