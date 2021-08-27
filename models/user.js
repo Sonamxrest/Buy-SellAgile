@@ -55,7 +55,7 @@ ref:"Product"
 }],
 Rating:[{
     user:{
-        type:mongoose.Schema.Types.ObjectId
+        type:String
     },
     rating:{
         type:Number

@@ -44,7 +44,7 @@ route.post('/login',(req,res)=>{
 const username = req.body['Username']
 const password = req.body['Password']
 console.log(req.body)
-User.findOne({Username:username}).populate('Friends.user').populate({path:"Likes.product",populate:{path:"User"}}).populate({path:"Likes.product",populate:{path:"Comments.user"}}).then((data)=>{
+User.findOne({Username:username}).populate('Friends.user').populate('Rating.user').populate({path:"Likes.product",populate:{path:"User"}}).populate({path:"Likes.product",populate:{path:"Comments.user"}}).then((data)=>{
 if(!data){
     console.log('no user found')
 res.status(200).json({success:false,message:'no user found'})
@@ -187,5 +187,53 @@ route.get('/users/:id',(req,res)=>{
         return res.status(200).json({success:true,user:data,token:""})
 
     })
+})
+
+route.put('/rate/:id',verifyUser,(req,res)=>{
+    console.log(req.body.Rating)
+    User.findOne({_id:req.params.id,'Rating.user':req.user._id}).then((data)=>{
+        if(data)
+    {
+        console.log(data)
+        User.update({'Rating.user':req.user._id},{
+            
+                $set:{'Rating.$.rating':parseInt(req.body.Rating),'Rating.$.user':req.user._id}
+            
+                }).then((datas)=>{
+                    return res.status(200).json({success:true,message:"Done"})
+                }) 
+
+    }
+    else{
+        User.findByIdAndUpdate({_id:req.params.id},{
+            $push:{Rating:{user:req.user._id,rating:parseInt(req.body.Rating)}}
+                }).then((data)=>{
+                    return res.status(200).json({success:true,message:"data xaina"})
+                })   
+    }
+        
+
+    })
+    
+                
+})  
+
+route.put("/pay/:id", verifyUser,async(req,res)=>{
+
+    const transaction = req.body.amount
+    const reciever = await User.findById({_id:req.params.id})
+    const sender = await User.findById({_id: req.user._id})
+    User.findOneAndUpdate({_id:reciever._id},{
+        Cash : (reciever.Cash + parseInt(transaction))
+    }).then((dre)=>{
+        User.findOneAndUpdate({_id:sender._id},{
+            Cash : (reciever.Cash - parseInt(transaction))
+        }).then((dd) =>{
+            return res.status(200).json({message:"Dami"})
+        })
+    })
+    console.log(amount)
+   
+
 })
 module.exports = route
