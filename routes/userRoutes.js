@@ -5,6 +5,7 @@ const User = require('../models/user')
 const jwt = require('jsonwebtoken')
 const upload = require('../middleware/upload')
 const { verifyUser } = require('../middleware/authentication')
+const Transaction = require('../models/transaction')
 
 
 
@@ -44,7 +45,7 @@ route.post('/login',(req,res)=>{
 const username = req.body['Username']
 const password = req.body['Password']
 console.log(req.body)
-User.findOne({Username:username}).populate('Friends.user').populate('Rating.user').populate({path:"Likes.product",populate:{path:"User"}}).populate({path:"Likes.product",populate:{path:"Comments.user"}}).then((data)=>{
+User.findOne({Username:username}).populate('Friends.user').populate({path:"Likes.product",populate:{path:"User"}}).populate({path:"Likes.product",populate:{path:"Comments.user"}}).then((data)=>{
 if(!data){
     console.log('no user found')
 res.status(200).json({success:false,message:'no user found'})
@@ -219,7 +220,6 @@ route.put('/rate/:id',verifyUser,(req,res)=>{
 })  
 
 route.put("/pay/:id", verifyUser,async(req,res)=>{
-
     const transaction = req.body.amount
     const reciever = await User.findById({_id:req.params.id})
     const sender = await User.findById({_id: req.user._id})
@@ -229,11 +229,12 @@ route.put("/pay/:id", verifyUser,async(req,res)=>{
         User.findOneAndUpdate({_id:sender._id},{
             Cash : (reciever.Cash - parseInt(transaction))
         }).then((dd) =>{
-            return res.status(200).json({message:"Dami"})
+            const transaction = Transaction({ Sender: sender._id, Reciever: reciever._id, Amount: parseInt(transaction)})
+            transaction.save().then((resss) =>{
+                return res.status(200).json({message:"Dami"})
+            })
         })
     })
     console.log(amount)
-   
-
 })
 module.exports = route
