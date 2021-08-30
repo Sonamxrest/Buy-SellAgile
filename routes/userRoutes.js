@@ -6,6 +6,7 @@ const jwt = require('jsonwebtoken')
 const upload = require('../middleware/upload')
 const { verifyUser } = require('../middleware/authentication')
 const Transaction = require('../models/transaction')
+const { Router } = require('express')
 
 
 
@@ -231,10 +232,22 @@ route.put("/pay/:id", verifyUser,async(req,res)=>{
         }).then((dd) =>{
             const transaction = Transaction({ Sender: sender._id, Reciever: reciever._id, Amount: parseInt(transaction)})
             transaction.save().then((resss) =>{
-                return res.status(200).json({message:"Dami"})
+                return res.status(200).json({success:true,message:"Dami"})
             })
         })
     })
     console.log(amount)
+})
+route.get("/sent", verifyUser,(req,res)=>{
+     Transaction.findOne({Sender: req.user._id}).then((data)=>{
+         return res.status(200).json({success:true, data:data})
+     })
+
+})
+route.get("/revieved", verifyUser,(req,res)=>{
+    Transaction.findOne({Reciever: req.user._id}).then((data)=>{
+        return res.status(200).json({success:true, data:data})
+    })
+
 })
 module.exports = route
