@@ -162,7 +162,7 @@ Product.findByIdAndUpdate({_id:req.body._id},{
 })
 route.get('/get/product',(req,res)=>{
     Product.find().populate('User').populate('Comments.user').then((data)=>{
-        
+        console.log(data)
         return res.status(200).json({success:true,data:data})
     })
 })
