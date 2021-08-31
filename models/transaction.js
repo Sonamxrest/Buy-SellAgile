@@ -12,6 +12,10 @@ Reciever:{
     type:mongoose.Schema.Types.ObjectId,
     ref:'User'
 },
+Product:{
+type:mongoose.Schema.Types.ObjectId,
+ref:'Product'
+},
 Date:{
     type:Date,
     default: Date.now()
