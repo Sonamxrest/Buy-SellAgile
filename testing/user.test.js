@@ -24,7 +24,7 @@ describe("UserTesting", () => {
                 "Name": "Nima",
                 "Username": "nima",
                 "Password": "123456",
-                "PhoneNumber": "01541582"
+                "PhoneNumber": "0154152"
             }
         
         return User.create(user)
@@ -43,5 +43,6 @@ describe("UserTesting", () => {
         { $set: reg });
     expect(status.ok).toBe(1);
 });
+
    
 })
