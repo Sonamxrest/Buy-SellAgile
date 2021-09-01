@@ -232,7 +232,7 @@ route.put("/pay/:id", verifyUser,async(req,res)=>{
         User.findOneAndUpdate({_id:sender._id},{
             Cash : (reciever.Cash - parseInt(transaction))
         }).then((dd) =>{
-            const tran = Transaction({ Sender: sender._id, Reciever: reciever._id, Amount: parseInt(transaction), Description: desc})
+            const tran = Transaction({ Sender: sender._id, Reciever: reciever._id, Amount: parseInt(transaction), Description: desc,Product:req.body.product})
             tran.save().then((resss) =>{
                 return res.status(200).json({success:true,message:"Dami"})
             })
@@ -240,7 +240,8 @@ route.put("/pay/:id", verifyUser,async(req,res)=>{
     })
 })
 route.get("/transaction", verifyUser,(req,res)=>{
-     Transaction.find({$or:[{'Sender':req.user._id},{'Reciever':req.user._id}]}).then((data)=>{
+     Transaction.find({$or:[{'Sender':req.user._id},{'Reciever':req.user._id}]}).populate('Sender').populate('Reciever').populate('Product').then((data)=>{
+         console.log(data)
          return res.status(200).json({success:true, data:data})
      })
 
