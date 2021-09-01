@@ -221,7 +221,8 @@ route.put('/rate/:id',verifyUser,(req,res)=>{
 })  
 
 route.put("/pay/:id", verifyUser,async(req,res)=>{
-    const transaction = req.body.amount
+    const transaction = req.body.amount;
+    const desc = req.body.desc;
     const reciever = await User.findById({_id:req.params.id})
     const sender = await User.findById({_id: req.user._id})
     User.findOneAndUpdate({_id:reciever._id},{
@@ -230,24 +231,18 @@ route.put("/pay/:id", verifyUser,async(req,res)=>{
         User.findOneAndUpdate({_id:sender._id},{
             Cash : (reciever.Cash - parseInt(transaction))
         }).then((dd) =>{
-            const transaction = Transaction({ Sender: sender._id, Reciever: reciever._id, Amount: parseInt(transaction)})
-            transaction.save().then((resss) =>{
+            const tran = Transaction({ Sender: sender._id, Reciever: reciever._id, Amount: parseInt(transaction), Description: desc})
+            tran.save().then((resss) =>{
                 return res.status(200).json({success:true,message:"Dami"})
             })
         })
     })
-    console.log(amount)
 })
-route.get("/sent", verifyUser,(req,res)=>{
-     Transaction.findOne({Sender: req.user._id}).then((data)=>{
+route.get("/transaction", verifyUser,(req,res)=>{
+     Transaction.find({$or:[{'Sender':req.user._id},{'Reciever':req.user._id}]}).then((data)=>{
          return res.status(200).json({success:true, data:data})
      })
 
 })
-route.get("/revieved", verifyUser,(req,res)=>{
-    Transaction.findOne({Reciever: req.user._id}).then((data)=>{
-        return res.status(200).json({success:true, data:data})
-    })
 
-})
 module.exports = route
