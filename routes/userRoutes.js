@@ -221,6 +221,7 @@ route.put('/rate/:id',verifyUser,(req,res)=>{
 })  
 
 route.put("/pay/:id", verifyUser,async(req,res)=>{
+    console.log("Pay")
     const transaction = req.body.amount;
     const desc = req.body.desc;
     const reciever = await User.findById({_id:req.params.id})

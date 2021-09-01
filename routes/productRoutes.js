@@ -128,7 +128,7 @@ if(flag)
         User.findByIdAndUpdate({_id:req.user._id},{
         $pull:{Likes:{product:req.params.id}}
         }).then((data)=>{
-                    return res.status(200).json({success:false,message:"UnLiked"})
+                    return res.status(200).json({success:true,message:"UnLiked"})
         })
         })
 }
