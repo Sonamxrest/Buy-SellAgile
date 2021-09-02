@@ -196,7 +196,7 @@ route.put('/rate/:id',verifyUser,(req,res)=>{
     User.findOne({_id:req.params.id,'Rating.user':req.user._id}).then((data)=>{
         if(data)
     {
-        console.log(data)
+        console.log('rating ko data', data)
         User.update({'Rating.user':req.user._id},{
             
                 $set:{'Rating.$.rating':parseInt(req.body.Rating),'Rating.$.user':req.user._id}
