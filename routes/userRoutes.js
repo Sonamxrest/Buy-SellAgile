@@ -79,6 +79,20 @@ else{
 })
 })
 
+route.put('/checkPassword',verifyUser,(req,res)=>{
+    console.log("Hi Passowrd", req.body.password)
+    User.findById({_id:req.user._id}).then((data)=>{
+    
+        bcrypt.compare(req.body.password,data.Password).then((result)=>{
+            if(result == true)
+            {
+
+                return res.status(200).json({success:true,message:"Dami"})
+            }
+        })
+    })
+
+})
 route.put('/update/profile/:id',upload.single('profile'),(req,res)=>{
 console.log(req.file)
 User.findByIdAndUpdate({_id:req.params.id},{

@@ -128,7 +128,10 @@ if(flag)
         User.findByIdAndUpdate({_id:req.user._id},{
         $pull:{Likes:{product:req.params.id}}
         }).then((data)=>{
-                    return res.status(200).json({success:true,message:"UnLiked"})
+            User.findById({_id:req.user._id}).populate('Friends.user').populate({path:"Likes.product",populate:{path:"User"}}).populate({path:"Likes.product",populate:{path:"Comments.user"}})
+            .then((user)=>{
+                return res.status(200).json({success:false,token:"",user:user})
+            })
         })
         })
 }
@@ -140,7 +143,10 @@ else if(flag===false) {
         User.findByIdAndUpdate({_id:req.user._id},{
         $push:{Likes:{product:req.params.id}}
         }).then((data)=>{
-            return res.status(200).json({success:true,message:"Liked"})
+            User.findById({_id:req.user._id}).populate('Friends.user').populate({path:"Likes.product",populate:{path:"User"}}).populate({path:"Likes.product",populate:{path:"Comments.user"}})
+            .then((user)=>{
+                return res.status(200).json({success:true,token:"",user:user})
+            })
         })
         })
 }
