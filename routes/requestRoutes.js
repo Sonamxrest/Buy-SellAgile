@@ -35,10 +35,11 @@ Request.findByIdAndDelete({_id:id}).then((Data)=>{
 
         $push:{Friends:{user:me}}
     }).then( (data)=>{User.findByIdAndUpdate({_id:me},{
-
         $push:{Friends:{user:sender}}
     }).then((data)=>{
-       return res.status(200).json({success:true,message:"Request Accepted"})
+        User.findOne({_id:me}).populate('Friends.user').populate({path:"Likes.product",populate:{path:"User"}}).populate({path:"Likes.product",populate:{path:"Comments.user"}}).then((newUser)=>{
+       return res.status(200).json({success:true,token:"",user:newUser})
+    })
     })
 
 })
