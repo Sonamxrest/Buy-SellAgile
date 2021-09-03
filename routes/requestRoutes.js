@@ -8,8 +8,17 @@ const User = require('../models/user')
 
 route.post('/sendRequest/:id',verifyUser,(req,res)=>{
     console.log("Hello")
+Request.findOne({$or:[{'From':req.user._id,'To':req.params.id},{'From':req.params.id,'To':req.user.id}]}).then((response)=>{
+if(response)
+{
+   return res.status(200).json({success:true,data:response})
+}
+else{
 const data =new Request({From:req.user._id,To:req.params.id})
-data.save().then((data)=>{res.status(200).json({success:true,data:data})})
+   return data.save().then((data)=>{res.status(200).json({success:true,data:data})})
+}
+})
+
 })
 
 route.put('/acceptRequest',verifyUser,(req,res)=>{

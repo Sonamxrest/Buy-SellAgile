@@ -89,6 +89,10 @@ route.put('/checkPassword',verifyUser,(req,res)=>{
 
                 return res.status(200).json({success:true,message:"Dami"})
             }
+            else{
+                return res.status(200).json({success:false,message:"Dami"})
+
+            }
         })
     })
 
