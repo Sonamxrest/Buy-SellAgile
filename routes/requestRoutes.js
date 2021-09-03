@@ -15,7 +15,8 @@ if(response)
 }
 else{
 const data =new Request({From:req.user._id,To:req.params.id})
-   return data.save().then((data)=>{res.status(200).json({success:true,data:data})})
+    data.save().then((data)=>{
+        return res.status(200).json({success:true,data:data})})
 }
 })
 

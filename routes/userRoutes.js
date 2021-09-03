@@ -252,7 +252,10 @@ route.put("/pay/:id", verifyUser,async(req,res)=>{
         }).then((dd) =>{
             const tran = Transaction({ Sender: sender._id, Reciever: reciever._id, Amount: parseInt(transaction), Description: desc,Product:req.body.product})
             tran.save().then((resss) =>{
-                return res.status(200).json({success:true,message:"Dami"})
+                User.findOne({_id:req.user._id}).populate('Friends.user').populate({path:"Likes.product",populate:{path:"User"}}).populate({path:"Likes.product",populate:{path:"Comments.user"}}).then((data)=>{
+                    return res.status(200).json({success:true,token:"",user:data})
+                })
+                
             })
         })
     })
