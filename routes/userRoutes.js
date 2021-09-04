@@ -102,7 +102,11 @@ console.log(req.file)
 User.findByIdAndUpdate({_id:req.params.id},{
     Profile:req.file.filename
 }).then((data)=>{
-    res.status(200).json({success:true,message:req.file.filename})
+    User.findById({_id:req.params.id}).populate('Friends.user').populate({path:"Likes.product",populate:{path:"User"}}).populate({path:"Likes.product",populate:{path:"Comments.user"}}).then((user)=>{
+     console.log(user)
+        res.status(200).json({success:true,token:"",user:user})
+
+    })
 })
 
 })
@@ -219,10 +223,12 @@ route.put('/rate/:id',verifyUser,(req,res)=>{
         console.log(data)
         User.update({'Rating.user':req.user._id},{
             
-                $set:{'Rating.$.rating':parseInt(req.body.Rating),'Rating.$.user':req.user._id}
+               $set:{'Rating.$.rating':parseInt(req.body.Rating),'Rating.$.user':req.user._id}
             
                 }).then((datas)=>{
-                    return res.status(200).json({success:true,message:"Done"})
+                    User.findById({_id:req.params.id}).populate('Friends.user').populate({path:"Likes.product",populate:{path:"User"}}).populate({path:"Likes.product",populate:{path:"Comments.user"}}).then((user)=>{
+                        return res.status(200).json({success:true,token:"",user:user})
+                    })
                 }) 
 
     }
@@ -230,7 +236,9 @@ route.put('/rate/:id',verifyUser,(req,res)=>{
         User.findByIdAndUpdate({_id:req.params.id},{
             $push:{Rating:{user:req.user._id,rating:parseInt(req.body.Rating)}}
                 }).then((data)=>{
-                    return res.status(200).json({success:true,message:"data xaina"})
+                    User.findById({_id:req.params._id}).populate('Friends.user').populate({path:"Likes.product",populate:{path:"User"}}).populate({path:"Likes.product",populate:{path:"Comments.user"}}).then((user)=>{
+                        return res.status(200).json({success:true,token:"",user:user})
+                    })
                 })   
     }
         

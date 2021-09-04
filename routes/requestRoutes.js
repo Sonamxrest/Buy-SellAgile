@@ -11,12 +11,12 @@ route.post('/sendRequest/:id',verifyUser,(req,res)=>{
 Request.findOne({$or:[{'From':req.user._id,'To':req.params.id},{'From':req.params.id,'To':req.user.id}]}).then((response)=>{
 if(response)
 {
-   return res.status(200).json({success:true,data:response})
+   return res.status(200).json({success:false,message:"Request Already In User's Bucket"})
 }
 else{
 const data =new Request({From:req.user._id,To:req.params.id})
     data.save().then((data)=>{
-        return res.status(200).json({success:true,data:data})})
+        return res.status(200).json({success:true,message:"Request Sent Successfully"})})
 }
 })
 
