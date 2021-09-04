@@ -263,7 +263,7 @@ route.put("/pay/:id", verifyUser,async(req,res)=>{
     })
 })
 route.get("/transaction", verifyUser,(req,res)=>{
-     Transaction.find({$or:[{'Sender':req.user._id},{'Reciever':req.user._id}]}).populate('Sender').populate('Reciever').populate('Product').then((data)=>{
+     Transaction.find({$or:[{'Sender':req.user._id},{'Reciever':req.user._id}]}).populate('Sender').populate("Reciever").populate('Product').populate({path:"Sender.Rating",populate:{path:"user"}}).populate({path:"Reciever.Rating",populate:{path:"user"}}).then((data)=>{
          console.log(data)
          return res.status(200).json({success:true, data:data})
      })
