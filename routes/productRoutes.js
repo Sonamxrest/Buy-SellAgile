@@ -89,7 +89,21 @@ route.put('/update/product/:id',(req,res)=>{
 //    res.status(200).json({success:true,message:"Done"})
 //})
 //})
-
+route.put("/uploadProduct/:id/:item",upload.fields([{name:'image'}]),async(req,res)=>{
+var product = await Product.findById({_id:req.params.id})
+var oldArray = product.Images
+var indxes = req.params.item
+var images = req.files.image
+images.forEach((data,i) => {
+    oldArray[indxes[i]] = data.filename
+    console.log("updated array0", indxes[i], oldArray[indxes[i]])
+   })
+   Product.findOneAndUpdate({_id:product._id},{
+       Images:oldArray
+   }).then((data)=>{
+    return res.status(200).json({success:true,data:""})
+   })
+})
  route.put('/post/upload/:id',upload.fields([{name:'image'}]),(req,res)=>{
      console.log("aayo")
  let newData =[]

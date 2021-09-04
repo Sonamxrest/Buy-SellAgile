@@ -200,6 +200,8 @@ User.findById({_id:req.user._id}).populate('Friends.user').populate({path:"Likes
 
 })
 
+
+
 route.get('/users/:id',(req,res)=>{
     console.log(req.params.id)
     User.findById({_id:req.params.id}).populate('Friends.user').populate({path:"Likes.product",populate:{path:"User"}}).populate({path:"Likes.product",populate:{path:"Comments.user"}}).then((data)=>{
