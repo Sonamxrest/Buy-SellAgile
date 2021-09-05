@@ -69,7 +69,8 @@ route.put('/update/product/:id',(req,res)=>{
         Description:description,
         Features:req.body.Features,
         Condition:req.body.Condition,
-        Negotiable:negotiable
+        Negotiable:negotiable,
+        SoldOut: false
     }).then((result)=>{
         return res.status(200).json({success:true,message:"Done"})
     })
