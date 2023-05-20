@@ -57,6 +57,7 @@ else{
 
 route.put('/update/product/:id',(req,res)=>{
 
+    console.log('this is update req', req.body)
     const name = req.body.Name
     const category = req.body.Category
     const price = parseInt(req.body.Price)
